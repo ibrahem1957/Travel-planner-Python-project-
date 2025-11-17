@@ -1,4 +1,4 @@
-# Travel-planner-Python-project-
+# Travel planner Python project
 This project is a simple travel planner assistant built in Python.
 It was created as one of the requirements of the AI model building and development bootcamp offered by Tuwaiq Academy.
 
