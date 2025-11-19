@@ -1,73 +1,71 @@
-import recommendation_logic
-#the main interaction with the user
-def get_user_input():
-    """
-    1- Asking the user for the trip budget 
-    2- Allowing the user to select trip types by numbers
+import streamlit as st
+from recommendation_logic import getting_destination
+import data
+import random
 
-    """
+st.title("🌍 Travel Planner")
 
-    # Welcome message
-    print("========================================")
-    print("🌍 Welcome to the Travel Planning Assistant!")
-    print("Let's help you set up your trip details.")
-    print("========================================\n")
+# إدخال المستخدم
+budget = st.number_input("Enter your budget (SAR):", min_value=0)
+trip_types_input = st.text_input(
+    "Enter trip types (comma separated):", 
+    "Culture, Beach, Adventure"
+)
+trip_types = [t.strip() for t in trip_types_input.split(",")]
 
+# زر للحصول على التوصيات
+if st.button("Get Recommendations"):
+    # تعريف دالة طباعة التوصيات بشكل جميل
+    def print_recommendations(title, recs):
+        st.subheader(title)
+        if recs:
+            rec = random.choice(recs)
+            for name, info in rec.items():
+                st.markdown(f"**Destination:** {name}")
+                if "country" in info:
+                    st.markdown(f"**Country:** {info['country']}")
+                else:
+                    st.markdown(f"**Region:** {info['region']}")
+                st.markdown(f"**Avg Budget/Day:** {info['average_budget_per_day']} SAR")
+                st.markdown("**Activities:**")
+                for act in info['activities']:
+                    st.markdown(f"- {act}")
+                st.markdown("---")
 
-    #1- Ask for budget
-    while True:
-        try:
-            budget = int(input("Enter your expected trip budget (integer only): "))
-            break
-        except ValueError:
-            print("❌ Error: Please enter a valid integer.\n")
+    # استدعاء الدالة من recommendation_logic
+    # مع تعديل لتقسيم التوصيات إلى محلية وعالمية
+    global_recommendations = []
+    local_recommendations = []
 
-    #2- Ask for Trip types selection by numbers
-    valid_trip_types = [
-        "Culture",
-        "Shopping",
-        "Family",
-        "History",
-        "Budget",
-        "Luxury",
-        "Technology",
-        "Food",
-        "Romantic",
-        "Relax",
-        "Nature",
-        "Events",
-        "Beach",
-        "Sea",
-        "Adventure"
-    ]
-    print("\n🔹 Available Trip Types:")
-    for i, t in enumerate(valid_trip_types, start=1):
-        print(f"{i}. {t}")
+    trip_types_lower = [t.lower() for t in trip_types]
 
-    print("\n👉 Choose one or more types by number. Example: 1, 3, 5\n")
+    for des_name, des_info in data.travel_data.items():
+        avg_price = des_info["average_budget_per_day"]
+        if 0 <= budget - avg_price <= 100 and any(t.lower() in des_info["trip_type"] for t in trip_types):
+            global_recommendations.append({des_name: des_info})
 
-    while True:
-        try:
-            user_input = input("Enter your choice(s): ")
+    for des_name, des_info in data.saudi_travel_data.items():
+        avg_price = des_info["average_budget_per_day"]
+        if 0 <= budget - avg_price <= 100 and any(t.lower() in des_info["trip_type"] for t in trip_types):
+            local_recommendations.append({des_name: des_info})
 
-            # Split and convert to integers
-            chosen_numbers = [int(num.strip()) for num in user_input.split(",")]
+    missing_types = []
+    for t in trip_types:
+        global_filtered = [rec for rec in global_recommendations if t in list(rec.values())[0]["trip_type"]]
+        local_filtered = [rec for rec in local_recommendations if t in list(rec.values())[0]["trip_type"]]
 
-            # Validate range
-            invalid_nums = [n for n in chosen_numbers if n < 1 or n > len(valid_trip_types)]
-            if invalid_nums:
-                raise ValueError(f"Invalid option(s): {invalid_nums}")
+        if global_filtered or local_filtered:
+            st.subheader(f"Recommendations for {t} trip:")
 
-            # Convert numbers to types
-            chosen_types = [valid_trip_types[n - 1] for n in chosen_numbers]
-            break
+        if global_filtered and local_filtered:
+            print_recommendations("Global Recommendations", global_filtered)
+            print_recommendations("Local Recommendations", local_filtered)
+        elif global_filtered:
+            print_recommendations("Global Recommendations", global_filtered)
+        elif local_filtered:
+            print_recommendations("Local Recommendations", local_filtered)
+        else:
+            missing_types.append(t)
 
-        except ValueError as e:
-            print(f"❌ Error: {e}")
-            print("Please choose numbers only from the list above.\n")
-
-    return budget, chosen_types
-
-
-budget, trip_types = get_user_input()
-recommendations = recommendation_logic.getting_destination(budget, trip_types)
+    if missing_types:
+        st.warning(f"Sorry! No recommendation matches your preferences and budget for: {', '.join(missing_types)}\nTry adjusting your budget or choosing different trip types.")
