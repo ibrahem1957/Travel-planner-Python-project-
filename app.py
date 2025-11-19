@@ -1,3 +1,4 @@
+import recommendation_logic
 #the main interaction with the user
 def get_user_input():
     """
@@ -58,3 +59,4 @@ budget, trip_types = get_user_input()
 print("\n✅ Inputs saved successfully!")
 print(f"Budget: {budget}")#test
 print(f"Trip Types Selected: {trip_types}") #test
+recommendations = recommendation_logic.getting_destination(budget, trip_types)#to test recommendation logic file
