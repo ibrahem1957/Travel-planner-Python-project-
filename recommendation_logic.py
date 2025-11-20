@@ -2,7 +2,7 @@ import data
 import random
 import streamlit as st
 
-def getting_destination(budget, trip_types, tolerance=100):
+getting_destination(budget, selected_trip, tolerance=100):
     global_recommendations = []
     local_recommendations = []
 
