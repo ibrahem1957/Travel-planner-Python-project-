@@ -1,4 +1,4 @@
-#global Destinations Dictionary
+# Global Destinations Dictionary
 travel_data = {
     "Istanbul": {
         "country": "Turkey",
@@ -10,7 +10,6 @@ travel_data = {
             "Grand Bazaar"
         ]
     },
-
     "Cairo": {
         "country": "Egypt",
         "average_budget_per_day": 200,
@@ -21,7 +20,6 @@ travel_data = {
             "Khan el Khalili"
         ]
     },
-
     "Dubai": {
         "country": "UAE",
         "average_budget_per_day": 600,
@@ -32,7 +30,6 @@ travel_data = {
             "Desert Safari"
         ]
     },
-
     "Tokyo": {
         "country": "Japan",
         "average_budget_per_day": 700,
@@ -43,7 +40,6 @@ travel_data = {
             "Akihabara"
         ]
     },
-
     "Bangkok": {
         "country": "Thailand",
         "average_budget_per_day": 250,
@@ -54,7 +50,6 @@ travel_data = {
             "Night Markets"
         ]
     },
-
     "Paris": {
         "country": "France",
         "average_budget_per_day": 650,
@@ -65,7 +60,6 @@ travel_data = {
             "Seine River Cruise"
         ]
     },
-
     "Baku": {
         "country": "Azerbaijan",
         "average_budget_per_day": 300,
@@ -76,7 +70,6 @@ travel_data = {
             "Caspian Sea Walk"
         ]
     },
-
     "Kuala Lumpur": {
         "country": "Malaysia",
         "average_budget_per_day": 280,
@@ -89,7 +82,7 @@ travel_data = {
     }
 }
 
-#Saudi Destinations Dictionary
+# Saudi Destinations Dictionary
 saudi_travel_data = {
     "Riyadh": {
         "region": "Central",
@@ -102,7 +95,6 @@ saudi_travel_data = {
             "Kingdom Tower Skybridge"
         ]
     },
-
     "Jeddah": {
         "region": "Western",
         "average_budget_per_day": 400,
@@ -111,10 +103,9 @@ saudi_travel_data = {
             "Jeddah Corniche",
             "Al Balad Historical District",
             "Red Sea boat trips",
-            "Cyan park"  
+            "Cyan park"
         ]
     },
-
     "Abha": {
         "region": "Southern",
         "average_budget_per_day": 280,
@@ -126,7 +117,6 @@ saudi_travel_data = {
             "Mountain Viewpoints"
         ]
     },
-
     "Taif": {
         "region": "Western",
         "average_budget_per_day": 250,
@@ -138,7 +128,6 @@ saudi_travel_data = {
             "Taif Zoo"
         ]
     },
-
     "AlUla": {
         "region": "Northwestern",
         "average_budget_per_day": 600,
@@ -150,7 +139,6 @@ saudi_travel_data = {
             "Stargazing experience"
         ]
     },
-
     "AlKhobar": {
         "region": "Eastern",
         "average_budget_per_day": 320,
@@ -162,7 +150,6 @@ saudi_travel_data = {
             "Half Moon Bay Beach"
         ]
     },
-
     "AlBaha": {
         "region": "Southern",
         "average_budget_per_day": 260,
