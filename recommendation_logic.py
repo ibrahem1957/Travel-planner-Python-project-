@@ -1,80 +1,32 @@
-import data
+import streamlit as st
 import random
-#Defining a filtering function to find matching destination for the user preferences
+import data
+
 def getting_destination(budget, trip_types):
-    #Creating 2 list to provide the user with global and local recommendations
-    global_recommendations = []
-    local_recommendations = []
+    results = []
 
-    #Convert all trip type names to lowercase for easy matching using lambda
-    trip_types = list(map(lambda t: t.lower(), trip_types))
+    # البحث في travel_data
+    for destination, info in data.travel_data.items():
+        if info["price"] <= budget:
+            if any(t.lower() in [tt.lower() for tt in info["trip_type"]] for t in trip_types):
+                results.append((destination, info["country"], info["price"], info["trip_type"]))
 
-    """
-    Doing iteration over both travel dictionaries (global & local)
-    to find:
-        - destinations matching the user budget with a -100 SAR tolerance
-        - destinations matching any of the chosen trip types
-    """
-    for des_name, des_info in data.travel_data.items():
-        avg_price = des_info["average_budget_per_day"]
-        price_diff = budget - avg_price
-        trip_type_list = des_info["trip_type"]
-        if 0 <= price_diff <= 100 and any(t in trip_type_list for t in trip_types):
-            global_recommendations.append({des_name: des_info})
+    # البحث في saudi_travel_data
+    for destination, info in data.saudi_travel_data.items():
+        if info["price"] <= budget:
+            if any(t.lower() in [tt.lower() for tt in info["trip_type"]] for t in trip_types):
+                results.append((destination, info["country"], info["price"], info["trip_type"]))
 
-    for des_name, des_info in data.saudi_travel_data.items():
-        avg_price = des_info["average_budget_per_day"]
-        price_diff = budget - avg_price
-        trip_type_list = des_info["trip_type"]
-        if 0 <= price_diff <= 100 and any(t in trip_type_list for t in trip_types):
-            local_recommendations.append({des_name: des_info})
-    #Creating a varibale to store any type that doesn't have a matching budget in our data
-    missing_types = []
-    any_found = False
+    # لو ما فيه نتائج
+    if not results:
+        st.warning("❌ No destinations found matching your budget and trip type.")
+        return
 
-    # Using if, elif, else to filter the trip type for each type recommendation
-    for t in trip_types:
-        global_filtered = [
-            rec for rec in global_recommendations
-            if t in list(rec.values())[0]["trip_type"]
-        ]
-        local_filtered = [
-            rec for rec in local_recommendations
-            if t in list(rec.values())[0]["trip_type"]
-        ]
+    # اختيار عشوائي من النتائج
+    dest = random.choice(results)
 
-        if global_filtered or local_filtered:
-            any_found = True
-            print(f"\nRecommendations for {t} trip:")
-
-        if global_filtered and local_filtered:
-            print_recommendations(" Global Recommendations", global_filtered)
-            print_recommendations(" Local Recommendations", local_filtered)
-        elif global_filtered:
-            print_recommendations(" Global Recommendations", global_filtered)
-        elif local_filtered:
-            print_recommendations(" Local Recommendations", local_filtered)
-        else:
-            missing_types.append(t)
-
-    if missing_types:
-        print("\nSorry! No recommendation matches your preferences and budget for:",end="")
-        print(" " + ", ".join(missing_types))
-        print("Try adjusting your budget or choosing different trip types\n")
-
-#Defining a printing function for better readability
-def print_recommendations(title, recs):
-    print(f"\n{title}:")
-    if recs:
-        rec = random.choice(recs)
-        for name, info in rec.items():
-            print(f"\n Destination: {name}")
-            if "country" in info:
-                print(f" Country: {info['country']}")
-            else:
-                print(f" Region: {info['region']}")
-            print(f" Avg Budget/Day: {info['average_budget_per_day']} SAR")
-            print(" Activities:")
-            for act in info['activities']:
-                print(f"   - {act}")
-            print()
+    st.success("🎉 Recommended Destination:")
+    st.write(f"**Destination:** {dest[0]}")
+    st.write(f"**Country:** {dest[1]}")
+    st.write(f"**Price:** {dest[2]} SAR")
+    st.write(f"**Trip Types:** {', '.join(dest[3])}")
