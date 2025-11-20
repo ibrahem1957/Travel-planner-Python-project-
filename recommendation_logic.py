@@ -1,49 +1,55 @@
-import streamlit as st
-import random
 import data
+import random
+import streamlit as st
 
-def getting_destination(budget, trip_types):
-    import streamlit as st
-    import random
-    import data
+def getting_destination(budget, trip_types, tolerance=100):
+    global_recommendations = []
+    local_recommendations = []
 
-    # Normalize trip types to lowercase
-    trip_types = [t.lower() for t in trip_types]
+    trip_types_lower = [t.lower() for t in trip_types]
 
-    results = []
+    # البحث في الوجهات العالمية
+    for des_name, des_info in data.travel_data.items():
+        avg_price = des_info["average_budget_per_day"]
+        if abs(budget - avg_price) <= tolerance and any(t in des_info["trip_type"] for t in trip_types_lower):
+            global_recommendations.append({des_name: des_info})
 
-    # البحث في travel_data (عالمي)
-    for destination, info in data.travel_data.items():
-        avg = info.get("average_budget_per_day")
-        if avg is None:
-            continue
-        if avg <= budget and any(t in [x.lower() for x in info.get("trip_type", [])] for t in trip_types):
-            results.append((destination, info, "global"))
+    # البحث في الوجهات السعودية
+    for des_name, des_info in data.saudi_travel_data.items():
+        avg_price = des_info["average_budget_per_day"]
+        if abs(budget - avg_price) <= tolerance and any(t in des_info["trip_type"] for t in trip_types_lower):
+            local_recommendations.append({des_name: des_info})
 
-    # البحث في saudi_travel_data (محلي)
-    for destination, info in data.saudi_travel_data.items():
-        avg = info.get("average_budget_per_day")
-        if avg is None:
-            continue
-        if avg <= budget and any(t in [x.lower() for x in info.get("trip_type", [])] for t in trip_types):
-            results.append((destination, info, "local"))
+    any_found = False
 
-    if not results:
-        st.warning("❌ No destinations found matching your budget and trip type.")
-        return
+    # عرض النتائج لكل نوع رحلة
+    for t in trip_types_lower:
+        global_filtered = [rec for rec in global_recommendations if t in list(rec.values())[0]["trip_type"]]
+        local_filtered = [rec for rec in local_recommendations if t in list(rec.values())[0]["trip_type"]]
 
-    # اختيار عشوائي وطباعته بشكل مرتب
-    dest_name, dest_info, scope = random.choice(results)
+        if global_filtered or local_filtered:
+            any_found = True
+            st.subheader(f"Recommendations for {t.capitalize()} trip:")
 
-    st.success("🎉 Recommended Destination:")
-    st.markdown(f"**Destination:** {dest_name}")
-    # country موجود بالـ global، region موجود بالـ local
-    if scope == "global" and "country" in dest_info:
-        st.markdown(f"**Country:** {dest_info['country']}")
-    elif scope == "local" and "region" in dest_info:
-        st.markdown(f"**Region:** {dest_info['region']}")
-    st.markdown(f"**Avg Budget/Day:** {dest_info.get('average_budget_per_day', 'N/A')} SAR")
-    st.markdown("**Activities:**")
-    for act in dest_info.get("activities", []):
-        st.markdown(f"- {act}")
-    st.markdown(f"**Trip Types:** {', '.join(dest_info.get('trip_type', []))}")
+        if global_filtered:
+            print_recommendations("Global Recommendations", global_filtered)
+        if local_filtered:
+            print_recommendations("Local Recommendations", local_filtered)
+
+    if not any_found:
+        st.warning(f"⚠️ No recommendations match your budget ({budget} SAR ±{tolerance}) and selected trip types: {', '.join(trip_types)}.")
+
+def print_recommendations(title, recs):
+    st.markdown(f"### {title}")
+    rec = random.choice(recs)
+    for name, info in rec.items():
+        st.markdown(f"**Destination:** {name}")
+        if "country" in info:
+            st.markdown(f"**Country:** {info['country']}")
+        else:
+            st.markdown(f"**Region:** {info['region']}")
+        st.markdown(f"**Avg Budget/Day:** {info['average_budget_per_day']} SAR")
+        st.markdown("**Activities:**")
+        for act in info["activities"]:
+            st.markdown(f"- {act}")
+        st.markdown("---")
