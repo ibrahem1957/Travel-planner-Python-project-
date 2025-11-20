@@ -27,5 +27,6 @@ selected_trip = [all_trip_types[i-1] for i in selected_numbers]
 if st.button("Get Recommendations"):
     if selected_trip:
         getting_destination(budget, selected_trip, tolerance=100)
+
     else:
         st.warning("⚠️ Please select at least one trip type.")
