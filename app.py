@@ -4,29 +4,59 @@ import data
 
 st.title("🌍 Travel Planner")
 
-# استخراج كل أنواع الرحلات
+# استخراج أنواع الرحلات من البيانات
 all_trip_types = set()
-for dest in list(data.travel_data.values()) + list(data.saudi_travel_data.values()):
+
+for dest in data.travel_data.values():
     for t in dest["trip_type"]:
         all_trip_types.add(t.capitalize())
+
+for dest in data.saudi_travel_data.values():
+    for t in dest["trip_type"]:
+        all_trip_types.add(t.capitalize())
+
 all_trip_types = sorted(list(all_trip_types))
 
-# إدخال الميزانية
+st.write("### Select one or more trip types:")
+selected_trip_types = st.multiselect("Trip Types", all_trip_types)
+
 budget = st.number_input("Enter your budget (SAR):", min_value=0)
 
-# اختيار أكثر من نوع رحلة
-selected_numbers = st.multiselect(
-    "Select one or more trip types:",
-    options=list(range(1, len(all_trip_types)+1)),
-    format_func=lambda x: f"{x}. {all_trip_types[x-1]}"
-)
-
-selected_trip = [all_trip_types[i-1] for i in selected_numbers]
-
-# زر التوصيات
 if st.button("Get Recommendations"):
-    if selected_trip:
-        getting_destination(budget, selected_trip, tolerance=100)
-
-    else:
+    if not selected_trip_types:
         st.warning("⚠️ Please select at least one trip type.")
+    else:
+        result = getting_destination(budget, selected_trip_types, tolerance=100)
+
+        global_rec = result["global"]
+        local_rec = result["local"]
+        missing = result["missing_types"]
+
+        # لو ما في ولا أي نتيجة
+        if not global_rec and not local_rec:
+            st.error("❌ No matching destinations within your budget ±100 SAR.")
+        else:
+            # عرض النتائج
+            if global_rec:
+                st.subheader("🌍 Global Recommendations")
+                for r in global_rec:
+                    for name, info in r.items():
+                        st.write(f"**{name}** — {info['country']}")
+                        st.write(f"Budget/day: {info['average_budget_per_day']} SAR")
+                        st.write("Activities:")
+                        st.write(", ".join(info["activities"]))
+                        st.write("---")
+
+            if local_rec:
+                st.subheader("🇸🇦 Saudi Recommendations")
+                for r in local_rec:
+                    for name, info in r.items():
+                        st.write(f"**{name}** — {info['region']}")
+                        st.write(f"Budget/day: {info['average_budget_per_day']} SAR")
+                        st.write("Activities:")
+                        st.write(", ".join(info["activities"]))
+                        st.write("---")
+
+        # الأنواع اللي ما لها نتائج
+        if missing:
+            st.warning("⚠️ No matches for: " + ", ".join(missing))
