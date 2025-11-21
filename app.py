@@ -6,11 +6,14 @@ import data
 # Custom CSS
 st.markdown("""
     <style>
+            .stApp {
+                background-color: #1a1a1a !important;
+            }
+            h1, h2, h3, p, label {
+                color: white !important;
+            }
+            </style>
 
-        /* تغيير الخلفية بالكامل */
-        .stApp {
-            background-color: #e9f3ff !important;
-        }
 
         /* تنسيق زر */
         .stButton button {
