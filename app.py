@@ -72,7 +72,7 @@ if run:
         else:
             # عرض النتائج
             if global_rec:
-                st.subheader("🌍 Global Recommendations")
+                st.subheader("🌍 Global Recommendations: ")
                 for r in global_rec:
                     for name, info in r.items():
                         st.markdown(f"""
@@ -86,7 +86,7 @@ if run:
 
 
             if local_rec:
-                st.subheader("SA Saudi Recommendations")
+                st.subheader("SA Saudi Recommendations: ")
                 for r in local_rec:
                     for name, info in r.items():
                         st.markdown(f"""
