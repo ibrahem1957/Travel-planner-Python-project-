@@ -85,7 +85,7 @@ if run:
 
 
             if local_rec:
-                st.subheader("🇸🇦 Saudi Recommendations")
+                st.subheader("SA Saudi Recommendations")
                 for r in local_rec:
                     for name, info in r.items():
                         st.markdown(f"""
