@@ -3,14 +3,6 @@ import streamlit as st
 from recommendation_logic import getting_destination
 import data
 
-with st.sidebar:
-    st.header("🧭 Trip Filters")
-    budget = st.number_input("Budget (SAR):", min_value=0)
-    selected_trip_types = st.multiselect("Trip Types:", all_trip_types)
-    st.write("---")
-    run = st.button("Get Recommendations")
-
-
 # Custom CSS
 st.markdown("""
     <style>
@@ -55,12 +47,15 @@ for dest in data.saudi_travel_data.values():
 
 all_trip_types = sorted(list(all_trip_types))
 
-st.write("### Select one or more trip types:")
-selected_trip_types = st.multiselect("Trip Types", all_trip_types)
+with st.sidebar:
+    st.header("🧭 Trip Filters")
+    selected_trip_types = st.multiselect("Trip Types", all_trip_types)
+    budget = st.number_input("Budget (SAR):", min_value=0)
+    st.write("---")
+    run = st.button("Get Recommendations")
 
-budget = st.number_input("Enter your budget (SAR):", min_value=0)
 
-if st.button("Get Recommendations"):
+if run:
     if not selected_trip_types:
         st.warning("⚠️ Please select at least one trip type.")
     else:
