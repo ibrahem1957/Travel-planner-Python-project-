@@ -1,3 +1,33 @@
+# Custom CSS
+st.markdown("""
+    <style>
+        .main {
+            background-color: #f4f6f9;
+            padding: 20px;
+        }
+        .stButton button {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            height: 50px;
+            font-size: 18px;
+            border: none;
+        }
+        .stButton button:hover {
+            background-color: #45a049;
+        }
+        .trip-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
+
 import streamlit as st
 from recommendation_logic import getting_destination
 import data
