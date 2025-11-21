@@ -6,10 +6,13 @@ import data
 # Custom CSS
 st.markdown("""
     <style>
-        .main {
-            background-color: #f4f6f9;
-            padding: 20px;
+
+        /* تغيير الخلفية بالكامل */
+        .stApp {
+            background-color: #e9f3ff !important;
         }
+
+        /* تنسيق زر */
         .stButton button {
             background-color: #4CAF50;
             color: white;
@@ -21,6 +24,8 @@ st.markdown("""
         .stButton button:hover {
             background-color: #45a049;
         }
+
+        /* تنسيق صندوق التوصيات */
         .trip-box {
             background: white;
             padding: 15px;
@@ -28,6 +33,7 @@ st.markdown("""
             margin-bottom: 10px;
             box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
         }
+
     </style>
 """, unsafe_allow_html=True)
 
