@@ -32,7 +32,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-st.title("🌍 Travel Planner")
+st.markdown("<h1 style='text-align: center; color:#333;'>🌍 Travel Planner</h1>", unsafe_allow_html=True)
 
 # استخراج أنواع الرحلات من البيانات
 all_trip_types = set()
@@ -68,24 +68,32 @@ if st.button("Get Recommendations"):
         else:
             # عرض النتائج
             if global_rec:
-                st.subheader("🌍 Global Recommendations")
-                for r in global_rec:
-                    for name, info in r.items():
-                        st.write(f"**{name}** — {info['country']}")
-                        st.write(f"Budget/day: {info['average_budget_per_day']} SAR")
-                        st.write("Activities:")
-                        st.write(", ".join(info["activities"]))
-                        st.write("---")
+    st.subheader("🌍 Global Recommendations")
+    for r in global_rec:
+        for name, info in r.items():
+            st.markdown(f"""
+                <div class="trip-box">
+                    <h3>{name}</h3>
+                    <p><b>Country:</b> {info.get('country', '-')}</p>
+                    <p><b>Budget/day:</b> {info['average_budget_per_day']} SAR</p>
+                    <p><b>Activities:</b> {", ".join(info['activities'])}</p>
+                </div>
+            """, unsafe_allow_html=True)
+
 
             if local_rec:
                 st.subheader("🇸🇦 Saudi Recommendations")
                 for r in local_rec:
                     for name, info in r.items():
-                        st.write(f"**{name}** — {info['region']}")
-                        st.write(f"Budget/day: {info['average_budget_per_day']} SAR")
-                        st.write("Activities:")
-                        st.write(", ".join(info["activities"]))
-                        st.write("---")
+                        st.markdown(f"""
+                            <div class="trip-box">
+                                <h3>{name}</h3>
+                                <p><b>Region:</b> {info.get('region', '-')}</p>
+                                <p><b>Budget/day:</b> {info['average_budget_per_day']} SAR</p>
+                                <p><b>Activities:</b> {", ".join(info['activities'])}</p>
+                            </div>
+                        """, unsafe_allow_html=True)
+
 
         # الأنواع اللي ما لها نتائج
         if missing:
