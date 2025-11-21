@@ -3,6 +3,14 @@ import streamlit as st
 from recommendation_logic import getting_destination
 import data
 
+with st.sidebar:
+    st.header("🧭 Trip Filters")
+    budget = st.number_input("Budget (SAR):", min_value=0)
+    selected_trip_types = st.multiselect("Trip Types:", all_trip_types)
+    st.write("---")
+    run = st.button("Get Recommendations")
+
+
 # Custom CSS
 st.markdown("""
     <style>
