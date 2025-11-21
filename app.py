@@ -1,3 +1,8 @@
+
+import streamlit as st
+from recommendation_logic import getting_destination
+import data
+
 # Custom CSS
 st.markdown("""
     <style>
@@ -26,11 +31,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
-
-import streamlit as st
-from recommendation_logic import getting_destination
-import data
 
 st.title("🌍 Travel Planner")
 
