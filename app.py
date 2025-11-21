@@ -3,41 +3,80 @@ import streamlit as st
 from recommendation_logic import getting_destination
 import data
 
-# Custom CSS
+# Full Modern UI Theme
 st.markdown("""
-    <style>
-            .stApp {
-                background-color: #1a1a1a !important;
-            }
-            h1, h2, h3, p, label {
-                color: white !important;
-            }
-            </style>
+<style>
 
+    /* ===== خلفية الصفحة كاملة ===== */
+    .stApp {
+        background: linear-gradient(135deg, #dff1ff 0%, #f8fbff 100%) !important;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-        /* تنسيق زر */
-        .stButton button {
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 8px;
-            height: 50px;
-            font-size: 18px;
-            border: none;
-        }
-        .stButton button:hover {
-            background-color: #45a049;
-        }
+    /* عنوان كبير جميل */
+    h1 {
+        text-align: center;
+        color: #1b3b5f !important;
+        font-size: 38px !important;
+        font-weight: 800 !important;
+        margin-bottom: 15px !important;
+    }
 
-        /* تنسيق صندوق التوصيات */
-        .trip-box {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-        }
+    /* النصوص */
+    .css-10trblm, .css-1q8dd3e {
+        color: #123 !important;
+        font-size: 18px !important;
+    }
 
-    </style>
+    /* ===== صندوق الاختيارات ===== */
+    .stSelectbox, .stMultiSelect, .stNumberInput {
+        background: #ffffff !important;
+        padding: 10px;
+        border-radius: 12px !important;
+        box-shadow: 0px 3px 10px rgba(0,0,0,0.06);
+    }
+
+    /* ===== زر التوصيات ===== */
+    .stButton button {
+        background: linear-gradient(90deg, #0077ff, #00c6ff);
+        color: white;
+        padding: 12px 20px;
+        font-size: 20px;
+        border-radius: 12px;
+        border: none;
+        transition: 0.3s ease-in-out;
+        font-weight: 600;
+        width: 100%;
+    }
+    .stButton button:hover {
+        background: linear-gradient(90deg, #005bd1, #00a3cc);
+        transform: scale(1.02);
+    }
+
+    /* ===== صندوق التوصيات ===== */
+    .trip-box {
+        background: white;
+        padding: 18px;
+        border-radius: 14px;
+        margin-bottom: 15px;
+        box-shadow: 0px 6px 16px rgba(0,0,0,0.1);
+        border-left: 6px solid #007bff;
+    }
+
+    .trip-box h3 {
+        color: #004a85;
+        margin-bottom: 8px;
+    }
+
+    /* خط فاصل */
+    hr {
+        border: none;
+        height: 1px;
+        background: #cccccc;
+        margin: 20px 0;
+    }
+
+</style>
 """, unsafe_allow_html=True)
 
 
