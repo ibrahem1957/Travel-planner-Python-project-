@@ -9,8 +9,9 @@ st.markdown("""
 
     /* ===== خلفية الصفحة كاملة ===== */
     .stApp {
-    background-color: #f5f7fa !important;
+    background: #ffffff !important;
 }
+
 
 
     /* عنوان كبير جميل */
