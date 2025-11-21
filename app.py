@@ -50,7 +50,8 @@ all_trip_types = sorted(list(all_trip_types))
 with st.sidebar:
     st.header("🧭 Trip Filters")
     selected_trip_types = st.multiselect("Trip Types", all_trip_types)
-    budget = st.number_input("Budget (SAR):", min_value=0)
+    budget = st.number_input("Daily Budget (SAR per day):", min_value=0)
+
     st.write("---")
     run = st.button("Get Recommendations")
 
