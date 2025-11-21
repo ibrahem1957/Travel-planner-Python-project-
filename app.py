@@ -9,9 +9,9 @@ st.markdown("""
 
     /* ===== خلفية الصفحة كاملة ===== */
     .stApp {
-        background: linear-gradient(135deg, #dff1ff 0%, #f8fbff 100%) !important;
-        font-family: 'Segoe UI', sans-serif;
-    }
+    background-color: #f5f7fa !important;
+}
+
 
     /* عنوان كبير جميل */
     h1 {
